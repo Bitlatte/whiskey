@@ -1,0 +1,10 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es5"],
+    "allowJs": false,
+    "isolatedModules": true
+  },
+  "include": ["api/**/*.ts"],
+  "exclude": ["node_modules"]
+}
