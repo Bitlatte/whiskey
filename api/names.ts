@@ -23,7 +23,7 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
   } else if (req.method === "GET") {
     const { data } = await openai.createCompletion({
       model: "text-davinci-002",
-      prompt: `Create a list of 10 names from these seed words: pirate, cove, ship, fleet, oak, tavern, whiskey`,
+      prompt: `Create a list of 10 names from these seed words: leaf, tree, sky, cloud, wind`,
       max_tokens: 60,
       temperature: 0.8,
       top_p: 1.0,
