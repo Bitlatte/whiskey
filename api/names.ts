@@ -7,31 +7,31 @@ const config = new Configuration({
 
 const openai = new OpenAIApi(config);
 
+const promptGenerator = (keywords: string[]) => {
+  const prompt = `Generate a list of 15 names by inventing a new word inspired by the keywords.\nKeywords: ${keywords.join(
+    ", ",
+  )}`;
+  return prompt;
+};
+
 const handler = async (req: VercelRequest, res: VercelResponse) => {
   if (req.method === "POST") {
     const { data } = await openai.createCompletion({
       model: "text-davinci-002",
-      prompt: `Create a list of ${req.body.quantity} names from these seed words: ${req.body.seeds}`,
+      prompt: promptGenerator(req.body.keywords),
       max_tokens: 60,
-      temperature: 0.8,
-      top_p: 1.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.0,
+      temperature: 0.9,
+      frequency_penalty: 0.8,
+      presence_penalty: 1.4,
     });
 
-    res.status(200).json({ names: data, success: true });
-  } else if (req.method === "GET") {
-    const { data } = await openai.createCompletion({
-      model: "text-davinci-002",
-      prompt: `Create a list of 10 names from these seed words: leaf, tree, sky, cloud, wind`,
-      max_tokens: 60,
-      temperature: 0.8,
-      top_p: 1.0,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.0,
-    });
-
-    res.status(200).json({ names: data, success: true });
+    if (data.choices) {
+      let text: string | undefined = data.choices[0].text;
+      if (typeof text === "string") {
+        let names = text.replace(/[^a-zA-Z ]+/g, "").split(" ");
+        res.status(200).json({ names: names, success: true });
+      }
+    }
   } else {
     res.status(500).json({ success: false });
   }
