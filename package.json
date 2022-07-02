@@ -11,12 +11,14 @@
   "license": "ISC",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
+    "@types/micro-cors": "^0.1.2",
     "@types/node": "^18.0.0",
     "@vercel/node": "^2.3.3",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "micro-cors": "^0.1.1",
     "openai": "^3.0.0"
   }
 }
