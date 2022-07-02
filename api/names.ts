@@ -15,6 +15,9 @@ const promptGenerator = (keywords: string[]) => {
 };
 
 const handler = async (req: VercelRequest, res: VercelResponse) => {
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
   if (req.method === "POST") {
     const { data } = await openai.createCompletion({
       model: "text-davinci-002",
@@ -29,11 +32,11 @@ const handler = async (req: VercelRequest, res: VercelResponse) => {
       let text: string | undefined = data.choices[0].text;
       if (typeof text === "string") {
         let names = text.replace(/[^a-zA-Z ]+/g, "").split(" ");
-        res.status(200).json({ names: names, success: true });
+        return res.status(200).json({ names: names, success: true });
       }
     }
   } else {
-    res.status(500).json({ success: false });
+    return res.status(500).json({ success: false });
   }
 };
 
